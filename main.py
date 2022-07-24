@@ -1,7 +1,4 @@
-field = []
-win = False
-player = 1
-count = 0
+repit = 'y'
 
 def draw_new(field):
     for i in range(9):
@@ -42,20 +39,24 @@ def win_detector(field):
             return True
     return False
 
-
-draw_new(field)
-while not win:
-    filling(choice(player))
-    win = win_detector(field)
-    count += 1
-    if win:
-        print(f'Игрок {player} выиграл!!!!')
-    elif count == 9:
-        print('Ничья!')
-        win = True
-    else:
-        if player == 1:
-            player = 2
+while repit == 'y':
+    field = []
+    draw_new(field)
+    win = False
+    player = 1
+    count = 0
+    while not win:
+        filling(choice(player))
+        win = win_detector(field)
+        count += 1
+        if win:
+            print(f'Игрок {player} выиграл!!!!')
+        elif count == 9:
+            print('Ничья!')
+            win = True
         else:
-            player = 1
-
+            if player == 1:
+                player = 2
+            else:
+                player = 1
+    repit = input('Начать новую игру? (y/n) ', )
