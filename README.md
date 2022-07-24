@@ -1,1 +1,1 @@
-# noughts_and_crosses
+# крестики нолики
