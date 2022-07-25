@@ -1,5 +1,3 @@
-repit = 'y'
-
 def draw_new(field):
     for i in range(9):
         field.append('-')
@@ -11,24 +9,29 @@ def draw(field):
     print('2', field[3], field[4], field[5])
     print('3', field[6], field[7], field[8])
 
-def choice(player):
+def choice(player, field):
     choice_test = False
-    print('Ход игрока ',player)
+    print('Ход игрока ', player)
     while not choice_test:
-        s = list(map(int,input('Введите координаты ячейки: ',).replace(' ', '')))
-        if (len(s) != 2) or (not int(s[0]) in range(1,4)) or (not int(s[1]) in range(1,4)):
-            print('Введены неверные координаты')
-        elif field[(s[0] - 1) + (s[0] - 1) * 2 + (s[1]-1)] != '-':
-            print('Данные координаты заняты')
+        s = input('Введите координаты ячейки: ',).replace(' ', '')
+        if s.isnumeric():
+            s = list(map(int, s))
+            coord = (s[0] - 1) + (s[0] - 1) * 2 + (s[1]-1)
+            if (len(s) != 2) or (not int(s[0]) in range(1,4)) or (not int(s[1]) in range(1,4)):
+                print('Введены неверные координаты')
+            elif field[coord] != '-':
+                print('Данные координаты заняты')
+            else:
+                choice_test = True
+                return coord
         else:
-            choice_test = True
-            return s
+            print('При вводе координат вы должны использовать только цифры')
 
-def filling(s):
+def filling(player, field, coord):
     if player == 1:
-        field[(s[0] - 1) + (s[0] - 1) * 2 + (s[1]-1)] = 'x'
+        field[coord] = 'x'
     else:
-        field[(s[0] - 1) + (s[0] - 1) * 2 + (s[1] - 1)] = 'o'
+        field[coord] = 'o'
     print()
     draw(field)
 
@@ -39,14 +42,14 @@ def win_detector(field):
             return True
     return False
 
-while repit == 'y':
-    field = []
-    draw_new(field)
-    win = False
-    player = 1
+def play():
     count = 0
+    field = []
+    player = 1
+    win = False
+    draw_new(field)
     while not win:
-        filling(choice(player))
+        filling(player, field, choice(player, field))
         win = win_detector(field)
         count += 1
         if win:
@@ -59,4 +62,8 @@ while repit == 'y':
                 player = 2
             else:
                 player = 1
+
+repit = 'y'
+while repit == 'y':
+    play()
     repit = input('Начать новую игру? (y/n) ', )
